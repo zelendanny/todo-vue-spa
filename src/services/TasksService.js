@@ -20,6 +20,12 @@ export default {
   addTask(task) {
     return apiClient.post('/tasks/', task);
   },
+  updateTask(task) {
+    return apiClient.put(`/tasks/${task.id}/`, task);
+  },
+  postTask(task) {
+    return apiClient.post('/tasks/', task);
+  },
   deleteTask(id) {
     return apiClient.delete(`/tasks/${id}/`);
   },
