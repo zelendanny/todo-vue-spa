@@ -6,6 +6,7 @@
         <label for="name">Title</label>
         <input id="name"
                v-model="taskForm.title"
+               required
                type="text"
                placeholder="Set an account name"/>
       </div>

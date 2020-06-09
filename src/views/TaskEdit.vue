@@ -23,10 +23,6 @@
                type="text"
                placeholder="format: YYYY-MM-DDThh:mm"/>
       </div>
-      <div v-if="isCompleted">
-        <input type="checkbox" id="is-completed" v-model="taskForm.is_completed">
-        <label for="is-completed"> completed task </label>
-      </div>
       <input type="submit" class="button -fill-gradient" value="Submit"/>
     </form>
   </div>

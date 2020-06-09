@@ -1,13 +1,15 @@
 <template>
-  <div class="tasks-list">
+  <div>
     <router-link class="add-task-link"
                  :to="{ name: 'task-create'}">
-      <h3>Add task</h3>
+      +
     </router-link>
-    <task-card v-for="task in tasks"
-               :key="task.id"
-               :task="task">
-    </task-card>
+    <div class="tasks-list">
+      <task-card v-for="task in tasks"
+                 :key="task.id"
+                 :task="task">
+      </task-card>
+    </div>
   </div>
 </template>
 
@@ -43,7 +45,10 @@ export default {
   }
 
   .add-task-link {
-    color: black;
+    position: relative;
+    left: 1.5%;
+    color: darkcyan;
     text-decoration: none;
+    font-size: 40px;
   }
 </style>

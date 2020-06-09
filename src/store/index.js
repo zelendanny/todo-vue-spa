@@ -21,7 +21,8 @@ export default new Vuex.Store({
     UPDATE_TASK(state, task) {
       const i = state.tasks.findIndex((el) => el.id === task.id);
       if (i !== -1) {
-        state.tasks[i] = task;
+        Vue.set(state.tasks, i, task);
+        // state.tasks[i] = task;
       } else {
         state.tasks.push(task);
       }
@@ -43,10 +44,9 @@ export default new Vuex.Store({
         commit('UPDATE_TASK', updatedTask);
       });
     },
-    doneTask({ state, dispatch }, id) {
+    toggleTask({ state, dispatch }, id) {
       const task = state.tasks.find((el) => el.id === id);
-      task.is_completed = true;
-      task.completed_at = new Date();
+      task.is_completed = !task.is_completed;
       dispatch('updateTask', task);
     },
     postTask({ commit }, task) {

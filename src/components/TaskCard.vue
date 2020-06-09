@@ -1,18 +1,30 @@
 <template>
-  <div class="task-card">
+  <div class="task-card"
+       :class="{'completed-task': task.is_completed}"
+       @click.self.prevent="toggleTask">
     Created {{ task.created_at | fromNow }}
     <span v-if="task.deadline_at">
       | Deadline {{ task.deadline_at | fromNow }}
     </span>
-    <h2>{{ task.title }}</h2>
-    <div class="description">{{ task.description }}</div>
-    <span @click="doneTask" class="button" v-if="!task.is_completed">Done </span>
-    <span v-else>
-      Completed at {{ task.completed_at | dateTime }}
-    </span> |
+    <h2 @click.self.prevent="toggleTask">
+      {{ task.title }}</h2>
+    <div class="description"
+         @click.self.prevent="toggleTask">
+      {{ task.description }}
+    </div>
+    <span v-if="task.is_completed"
+          class="task-footer"
+          :class="{'completed-task': task.is_completed}">
+      Completed at {{ task.completed_at | dateTime }} |
+    </span>
     <router-link :to="{ name: 'task-edit', params: { id: task.id }}"
-                 class="button"> Edit </router-link> |
-    <span @click="deleteTask" class="button"> Delete </span>
+                 class="task-footer"
+                 :class="{'completed-task': task.is_completed}"
+                 @click.prevent=""> Edit
+    </router-link>
+    |
+    <span @click.prevent="deleteTask" class="task-footer"
+          :class="{'completed-task': task.is_completed}"> Delete </span>
   </div>
 </template>
 
@@ -23,13 +35,13 @@ import Vue from 'vue';
 
 Vue.filter('fromNow', (value) => {
   if (value) {
-    return moment(String(value)).fromNow();
+    return moment(String(value), 'YYYY-MM-DDThh:mm:ss').fromNow();
   }
   return '';
 });
 Vue.filter('dateTime', (value) => {
   if (value) {
-    return moment(String(value)).format('Do MMM hh:mm');
+    return moment(String(value), 'YYYY-MM-DDThh:mm:ss').format('Do MMM hh:mm');
   }
   return '';
 });
@@ -43,8 +55,8 @@ export default {
     deleteTask() {
       this.$store.dispatch('deleteTask', this.task.id);
     },
-    doneTask() {
-      this.$store.dispatch('doneTask', this.task.id);
+    toggleTask() {
+      this.$store.dispatch('toggleTask', this.task.id);
     },
   },
 };
@@ -65,10 +77,18 @@ export default {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 1px 7px 0 rgba(0, 0, 0, 0.19);
   }
 
-  .button {
+  .completed-task {
+    color: lightgray;
+  }
+
+  .task-footer {
     font-weight: bold;
     color: black;
     text-decoration: none;
+  }
+
+  .task-footer.completed-task {
+    color: gray;
   }
 
   .description {
